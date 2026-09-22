@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const HOOK = join(import.meta.dir, "mermaid_display.js");
+const HOOK = join(import.meta.dir, "dist", "mermaid_display.js");
 
 // Feeds chunks as consecutive flushes of one message, returns what is shown.
 function run(chunks) {

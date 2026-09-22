@@ -1,0 +1,14 @@
+{
+  "name": "claude-mermaid",
+  "description": "Render mermaid diagrams in the Claude Code terminal",
+  "owner": {
+    "name": "Eugene"
+  },
+  "plugins": [
+    {
+      "name": "claude-mermaid",
+      "description": "Render mermaid diagrams in the Claude Code terminal",
+      "source": "./"
+    }
+  ]
+}

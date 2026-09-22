@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 // MessageDisplay hook for Claude Code: renders ```mermaid blocks as ASCII diagrams.
 // It is called once per batch of completed lines of a streaming message, so a
 // block can span several calls; the unclosed block is kept in a per-message file.
@@ -22,7 +22,7 @@ async function render(block, closeFence) {
   return block + closeFence;
 }
 
-const event = JSON.parse(await Bun.stdin.text());
+const event = JSON.parse(readFileSync(0, "utf8"));
 const delta = event.delta ?? "";
 const stateDir = join(process.env.XDG_RUNTIME_DIR || tmpdir(), "claude-mermaid");
 const stateFile = join(stateDir, `${event.message_id}.json`);

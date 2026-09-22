@@ -8,34 +8,13 @@ This hook fixes that. Claude writes plain Mermaid, and the terminal shows a real
 
 ## Install
 
-Requires [Bun](https://bun.sh) and Claude Code 2.1.277 or later.
+Requires Claude Code 2.1.277 or later, and Bun or Node.js on `PATH`.
 
 ```sh
-git clone https://github.com/txssu/claude-mermaid ~/.claude/claude-mermaid
-cd ~/.claude/claude-mermaid && bun install
+claude plugin marketplace add txssu/claude-mermaid && claude plugin install claude-mermaid@claude-mermaid
 ```
 
-Add the hook to `~/.claude/settings.json`, using absolute paths:
-
-```json
-{
-  "hooks": {
-    "MessageDisplay": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/you/.bun/bin/bun /home/you/.claude/claude-mermaid/mermaid_display.js",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-Running sessions pick it up without a restart.
+Or from inside Claude Code: `/plugin marketplace add txssu/claude-mermaid`, then `/plugin install claude-mermaid@claude-mermaid`. Already running sessions need `/reload-plugins`.
 
 ## Usage
 
@@ -48,8 +27,11 @@ Only the screen changes: the transcript and Claude's context keep the Mermaid so
 ## Development
 
 ```sh
-bun test
+bun install
+bun run test
 ```
+
+`dist/` is committed, since plugins are installed without `bun install`. Rebuild it with `bun run build`.
 
 ## License
 

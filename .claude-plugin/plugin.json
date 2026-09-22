@@ -1,0 +1,8 @@
+{
+  "name": "claude-mermaid",
+  "version": "1.0.0",
+  "description": "Render mermaid diagrams in the Claude Code terminal",
+  "author": { "name": "Eugene" },
+  "repository": "https://github.com/txssu/claude-mermaid",
+  "license": "MIT"
+}

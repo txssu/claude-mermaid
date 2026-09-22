@@ -3,8 +3,10 @@
   "private": true,
   "description": "Render mermaid diagrams in the Claude Code terminal",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "test": "bun test"
+    "build": "rm -rf dist && bun build src/mermaid_display.js --outdir dist --target node --format esm --splitting --minify",
+    "test": "bun run build && bun test"
   },
   "dependencies": {
     "beautiful-mermaid": "^1.1.3"
