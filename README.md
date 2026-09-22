@@ -1,10 +1,15 @@
 # claude-mermaid
 
-Claude Code renders tables, lists and syntax highlighting in the terminal, but ` ```mermaid ` blocks come out as raw source. So Claude falls back to hand-drawn ASCII diagrams, and they drift out of alignment.
-
-This hook fixes that. Claude writes plain Mermaid, and the terminal shows a real diagram drawn by [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid):
+Mermaid diagrams, rendered right in the Claude Code terminal.
 
 ![A sequence diagram rendered in Claude Code](assets/screenshot.png)
+
+Claude Code renders markdown tables but shows ` ```mermaid ` blocks as raw source, so Claude draws diagrams as ASCII art by hand, character by character. With this plugin, Claude writes a few lines of Mermaid and [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) draws the picture:
+
+- Answers come faster: Claude writes the short source, not every space and box character of the drawing.
+- Edits are cheap: "add PKCE to the diagram" changes a line of Mermaid instead of redrawing everything.
+- The layout never drifts, even on diagrams too tangled to draw by hand.
+- The diagram is reusable: paste the source into a README, PR or issue, and GitHub renders it too.
 
 ## Install
 
