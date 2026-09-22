@@ -10,11 +10,20 @@ This hook fixes that. Claude writes plain Mermaid, and the terminal shows a real
 
 Requires Claude Code 2.1.277 or later, and Bun or Node.js on `PATH`.
 
+Add this repo as a plugin marketplace, then install the plugin from it:
+
 ```sh
-claude plugin marketplace add txssu/claude-mermaid && claude plugin install claude-mermaid@claude-mermaid
+claude plugin marketplace add txssu/claude-mermaid
+claude plugin install claude-mermaid@claude-mermaid
 ```
 
-Or from inside Claude Code: `/plugin marketplace add txssu/claude-mermaid`, then `/plugin install claude-mermaid@claude-mermaid`. Already running sessions need `/reload-plugins`.
+Restart Claude Code to apply. The same commands work inside Claude Code as `/plugin marketplace add …` and `/plugin install …`.
+
+To update later:
+
+```sh
+claude plugin update claude-mermaid@claude-mermaid
+```
 
 ## Usage
 
