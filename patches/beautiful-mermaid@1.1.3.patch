@@ -31,6 +31,18 @@ index 69161a9d592769abec4466421fe8ce038306d182..9745b778d6ad90f9ea7aa65aa747f480
      graphDirection: 'TD', // default, overridden for flowcharts below
    }
  
+diff --git a/src/ascii/sequence.ts b/src/ascii/sequence.ts
+index 5ff5eaa1edc2a54828564ceb303271e436fb0642..c3922552b9d90487c060e87b345133ae6b36ccb4 100644
+--- a/src/ascii/sequence.ts
++++ b/src/ascii/sequence.ts
+@@ -122,7 +122,6 @@ export function renderSequenceAscii(text: string, config: AsciiConfig, colorMode
+       }
+     }
+ 
+-    curY += 1 // blank row before message
+ 
+     const msg = diagram.messages[m]!
+     const isSelf = msg.from === msg.to
 diff --git a/src/ascii/shapes/rectangle.ts b/src/ascii/shapes/rectangle.ts
 index 5d35dc314ebe35e907691d92940947c8b1bffd0c..f2e75c2c007592a9788d5a207e2ffc9c27ae5740 100644
 --- a/src/ascii/shapes/rectangle.ts

@@ -3,12 +3,25 @@
 // It is called once per batch of completed lines of a streaming message, so a
 // block can span several calls; the unclosed block is kept in a per-message file.
 
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, openSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { WriteStream } from "node:tty";
 
 const isOpenFence = (line) => /^\s*```mermaid/i.test(line);
 const isCloseFence = (line) => /^\s*`{3,}\s*$/.test(line);
+
+// stdout is a pipe to Claude Code, so ask the controlling terminal directly.
+function terminalWidth() {
+  try {
+    const tty = new WriteStream(openSync("/dev/tty", "w"));
+    const { columns } = tty;
+    tty.destroy();
+    return columns || Infinity;
+  } catch {
+    return Infinity;
+  }
+}
 
 async function render(block, closeFence) {
   try {
@@ -19,8 +32,11 @@ async function render(block, closeFence) {
     // boxBorderPaddingX comes from patches/: one-line boxes, one space around text.
     const options = { colorMode: "none", paddingX: 3, paddingY: 3, boxBorderPadding: 0, boxBorderPaddingX: 1 };
     const ascii = renderMermaidASCII(source, options).trimEnd();
+    const width = Math.max(...ascii.split("\n").map((line) => line.trimEnd().length));
+    // A diagram wider than the terminal wraps into garbage; the source reads better.
+    // 4 columns go to the indent Claude Code puts before a message.
     // Fenced, otherwise markdown joins the lines into one paragraph.
-    if (ascii) return "```\n" + ascii + "\n```\n";
+    if (ascii && width <= terminalWidth() - 4) return "```\n" + ascii + "\n```\n";
   } catch {}
   return block + closeFence;
 }
