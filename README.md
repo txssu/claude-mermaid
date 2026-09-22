@@ -31,7 +31,7 @@ Ask Claude for a diagram, e.g. "draw a sequence diagram of this project". The pl
 
 Only the screen changes: the transcript and Claude's context keep the Mermaid source. If a diagram fails to render, the source is shown as is.
 
-`MessageDisplay` is an undocumented hook, so a Claude Code update may break this. A block split across streaming chunks is kept in `$XDG_RUNTIME_DIR/claude-mermaid/` until it closes.
+A block split across streaming chunks is kept in `$XDG_RUNTIME_DIR/claude-mermaid/` until it closes.
 
 ## Development
 
