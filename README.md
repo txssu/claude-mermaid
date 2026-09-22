@@ -2,7 +2,7 @@
 
 Mermaid diagrams, rendered right in the Claude Code terminal.
 
-![A sequence diagram rendered in Claude Code](assets/screenshot.png)
+![A "Sign in with GitHub" sequence diagram rendered in Claude Code](assets/screenshot.png)
 
 Claude Code renders markdown tables but shows ` ```mermaid ` blocks as raw source, so Claude draws diagrams as ASCII art by hand, character by character. With this plugin, Claude writes a few lines of Mermaid and [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) draws the picture:
 
