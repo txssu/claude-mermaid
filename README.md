@@ -8,7 +8,7 @@ Claude Code renders markdown tables but shows ` ```mermaid ` blocks as raw sourc
 
 - Answers come faster: Claude writes the short source, not every space and box character of the drawing.
 - Edits are cheap: "add PKCE to the diagram" changes a line of Mermaid instead of redrawing everything.
-- The layout never drifts, even on diagrams too tangled to draw by hand.
+- Boxes and arrows always line up: the layout is computed, not typed out.
 - The diagram is reusable: paste the source into a README, PR or issue, and GitHub renders it too.
 
 ## Install
