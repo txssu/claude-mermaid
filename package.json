@@ -1,0 +1,12 @@
+{
+  "name": "claude-mermaid",
+  "private": true,
+  "description": "Render mermaid diagrams in the Claude Code terminal",
+  "license": "MIT",
+  "scripts": {
+    "test": "bun test"
+  },
+  "dependencies": {
+    "beautiful-mermaid": "^1.1.3"
+  }
+}
