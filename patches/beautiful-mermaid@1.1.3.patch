@@ -1,0 +1,143 @@
+diff --git a/src/ascii/grid.ts b/src/ascii/grid.ts
+index 0f4f6147ad0b6ebf8fca270fdcac48a9a53cf166..0e9900a828fcb748bbef4c2e4cc69c80748fff89 100644
+--- a/src/ascii/grid.ts
++++ b/src/ascii/grid.ts
+@@ -119,6 +119,7 @@ export function setColumnWidth(graph: AsciiGraph, node: AsciiNode): void {
+   const shapeDims = getShapeDimensions(node.shape, node.displayLabel, {
+     useAscii: graph.config.useAscii,
+     padding,
++    paddingX: graph.config.boxBorderPaddingX,
+   })
+ 
+   // Use shape-provided grid dimensions
+diff --git a/src/ascii/index.ts b/src/ascii/index.ts
+index 69161a9d592769abec4466421fe8ce038306d182..9745b778d6ad90f9ea7aa65aa747f4807bbe2591 100644
+--- a/src/ascii/index.ts
++++ b/src/ascii/index.ts
+@@ -41,6 +41,8 @@ export interface AsciiRenderOptions {
+   paddingY?: number
+   /** Padding inside node boxes. Default: 1 */
+   boxBorderPadding?: number
++  /** Horizontal padding inside node boxes. Default: boxBorderPadding */
++  boxBorderPaddingX?: number
+   /**
+    * Color mode for output.
+    * - 'none': No colors (plain text)
+@@ -107,6 +109,7 @@ export function renderMermaidASCII(
+     paddingX: options.paddingX ?? 5,
+     paddingY: options.paddingY ?? 5,
+     boxBorderPadding: options.boxBorderPadding ?? 1,
++    boxBorderPaddingX: options.boxBorderPaddingX,
+     graphDirection: 'TD', // default, overridden for flowcharts below
+   }
+ 
+diff --git a/src/ascii/shapes/rectangle.ts b/src/ascii/shapes/rectangle.ts
+index 5d35dc314ebe35e907691d92940947c8b1bffd0c..f2e75c2c007592a9788d5a207e2ffc9c27ae5740 100644
+--- a/src/ascii/shapes/rectangle.ts
++++ b/src/ascii/shapes/rectangle.ts
+@@ -28,7 +28,7 @@ export function getBoxDimensions(label: string, options: ShapeRenderOptions): Sh
+   const lineCount = lines.length
+ 
+   // Width: 2*padding + maxLineWidth + 2 border chars
+-  const innerWidth = 2 * options.padding + maxLineWidth
++  const innerWidth = 2 * (options.paddingX ?? options.padding) + maxLineWidth
+   const width = innerWidth + 2
+ 
+   // Height: lineCount + 2*padding + 2 border chars
+@@ -41,7 +41,7 @@ export function getBoxDimensions(label: string, options: ShapeRenderOptions): Sh
+     width,
+     height,
+     labelArea: {
+-      x: 1 + options.padding,
++      x: 1 + (options.paddingX ?? options.padding),
+       y: 1 + options.padding,
+       width: maxLineWidth,
+       height: lineCount,
+diff --git a/src/ascii/shapes/special.ts b/src/ascii/shapes/special.ts
+index e7ce95d83d1c83dcaaea862f5c26316f6beaad56..b485d7473460d0b92d99db36b45e04eba2a5c18e 100644
+--- a/src/ascii/shapes/special.ts
++++ b/src/ascii/shapes/special.ts
+@@ -31,7 +31,7 @@ export const subroutineRenderer: ShapeRenderer = {
+     const maxLineWidth = Math.max(...lines.map(l => l.length), 0)
+     const lineCount = lines.length
+ 
+-    const innerWidth = 2 * options.padding + maxLineWidth
++    const innerWidth = 2 * (options.paddingX ?? options.padding) + maxLineWidth
+     const width = innerWidth + 4  // Double borders on each side
+     const innerHeight = lineCount + 2 * options.padding
+     const height = innerHeight + 2
+@@ -40,7 +40,7 @@ export const subroutineRenderer: ShapeRenderer = {
+       width,
+       height,
+       labelArea: {
+-        x: 2 + options.padding,
++        x: 2 + (options.paddingX ?? options.padding),
+         y: 1 + options.padding,
+         width: maxLineWidth,
+         height: lineCount,
+@@ -145,7 +145,7 @@ export const cylinderRenderer: ShapeRenderer = {
+     const maxLineWidth = Math.max(...lines.map(l => l.length), 0)
+     const lineCount = lines.length
+ 
+-    const innerWidth = 2 * options.padding + maxLineWidth
++    const innerWidth = 2 * (options.paddingX ?? options.padding) + maxLineWidth
+     const width = innerWidth + 2
+     const innerHeight = lineCount + 2 * options.padding + 2  // Extra for curved top/bottom
+     const height = innerHeight + 2
+@@ -154,7 +154,7 @@ export const cylinderRenderer: ShapeRenderer = {
+       width,
+       height,
+       labelArea: {
+-        x: 1 + options.padding,
++        x: 1 + (options.paddingX ?? options.padding),
+         y: 2 + options.padding,
+         width: maxLineWidth,
+         height: lineCount,
+diff --git a/src/ascii/shapes/stadium.ts b/src/ascii/shapes/stadium.ts
+index b400cad6ba588fa166e260c1bdfcf616645af094..3e1ef5ba51ec04d903807e3fbe810d8a90783729 100644
+--- a/src/ascii/shapes/stadium.ts
++++ b/src/ascii/shapes/stadium.ts
+@@ -33,7 +33,7 @@ export const stadiumRenderer: ShapeRenderer = {
+     const maxLineWidth = Math.max(...lines.map(l => l.length), 0)
+     const lineCount = lines.length
+ 
+-    const innerWidth = 2 * options.padding + maxLineWidth
++    const innerWidth = 2 * (options.paddingX ?? options.padding) + maxLineWidth
+     const width = innerWidth + 4  // Extra for rounded ends
+     const innerHeight = lineCount + 2 * options.padding
+     const height = Math.max(innerHeight + 2, 3)
+@@ -42,7 +42,7 @@ export const stadiumRenderer: ShapeRenderer = {
+       width,
+       height,
+       labelArea: {
+-        x: 2 + options.padding,
++        x: 2 + (options.paddingX ?? options.padding),
+         y: 1 + options.padding,
+         width: maxLineWidth,
+         height: lineCount,
+diff --git a/src/ascii/shapes/types.ts b/src/ascii/shapes/types.ts
+index ba116c7fe45d5149efd222b6fc79f8b9a7c871a0..b7af0c39b284d785efa31d2f482aee190af9e3bc 100644
+--- a/src/ascii/shapes/types.ts
++++ b/src/ascii/shapes/types.ts
+@@ -33,6 +33,8 @@ export interface ShapeRenderOptions {
+   useAscii: boolean
+   /** Padding inside the shape */
+   padding: number
++  /** Horizontal padding inside the shape. Defaults to `padding`. */
++  paddingX?: number
+ }
+ 
+ /**
+diff --git a/src/ascii/types.ts b/src/ascii/types.ts
+index e6d93e530f92f70145bfcc9c9fde5cdf750248fc..d00c0b9ce9a5221c615065bb95f398d31d32b5ed 100644
+--- a/src/ascii/types.ts
++++ b/src/ascii/types.ts
+@@ -139,6 +139,8 @@ export interface AsciiConfig {
+   paddingY: number
+   /** Padding inside node boxes. Default: 1 */
+   boxBorderPadding: number
++  /** Horizontal padding inside node boxes. Defaults to boxBorderPadding. */
++  boxBorderPaddingX?: number
+   /** Graph direction: "LR" or "TD". */
+   graphDirection: 'LR' | 'TD'
+ }

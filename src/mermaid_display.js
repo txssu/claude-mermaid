@@ -15,7 +15,10 @@ async function render(block, closeFence) {
     // Imported lazily: most calls have no diagram and must stay fast.
     const { renderMermaidASCII } = await import("beautiful-mermaid");
     const source = block.slice(block.indexOf("\n") + 1);
-    const ascii = renderMermaidASCII(source, { colorMode: "none" }).trimEnd();
+    // Tightest spacing before edges and labels start colliding with boxes.
+    // boxBorderPaddingX comes from patches/: one-line boxes, one space around text.
+    const options = { colorMode: "none", paddingX: 3, paddingY: 3, boxBorderPadding: 0, boxBorderPaddingX: 1 };
+    const ascii = renderMermaidASCII(source, options).trimEnd();
     // Fenced, otherwise markdown joins the lines into one paragraph.
     if (ascii) return "```\n" + ascii + "\n```\n";
   } catch {}
