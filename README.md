@@ -18,7 +18,7 @@ Or from inside Claude Code: `/plugin marketplace add txssu/claude-mermaid`, then
 
 ## Usage
 
-Ask Claude for a diagram, e.g. "draw a mermaid sequence diagram of this project". Flowcharts, state, sequence, class, ER and XY charts are supported.
+Ask Claude for a diagram, e.g. "draw a sequence diagram of this project". The plugin tells Claude at session start that Mermaid is rendered, so it writes Mermaid instead of ASCII art. Flowcharts, state, sequence, class, ER and XY charts are supported.
 
 Only the screen changes: the transcript and Claude's context keep the Mermaid source. If a diagram fails to render, the source is shown as is.
 
