@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { closeSync, mkdtempSync, openSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -38,6 +38,27 @@ test("block split across flushes is rendered", () => {
   expect(shown).toContain("│ A ");
   expect(shown).not.toContain("A --> B");
   expect(shown.endsWith("┘\n```\nafter\n")).toBe(true);
+});
+
+test("fullwidth labels keep box borders aligned", () => {
+  expect(run(["```mermaid\ngraph LR\n  A[中文] --> B\n```\n"])).toBe(
+    "```\n┌──────┐   ┌───┐\n│ 中文 ├──►│ B │\n└──────┘   └───┘\n```\n",
+  );
+});
+
+const hasTerminal = (() => {
+  try {
+    closeSync(openSync("/dev/tty", "w"));
+    return true;
+  } catch {
+    return false;
+  }
+})();
+
+// The desktop app runs hooks without a controlling terminal.
+test.skipIf(hasTerminal)("without a terminal, a diagram wider than 80 columns is shown raw", () => {
+  const wide = "```mermaid\ngraph LR\n  A[" + "a".repeat(40) + "] --> B[" + "b".repeat(40) + "]\n```\n";
+  expect(run([wide])).toBe(wide);
 });
 
 test("invalid diagram is shown raw", () => {
